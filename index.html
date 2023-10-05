@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="lib/styles.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+</head>
+<body>
+    <div class="container text-center">
+        <h1 style="text-align: center;">Web Penghitung Saldo</h1>
+        <!-- <input type="text" id="saldoInput"> <br> <br> -->
+
+        <button type="button" id="inputSaldo">INPUT SALDO</button>
+        <br><br>
+        <div class="row">
+            <div class="col">
+                <h2>Saldo Anda :</h2>
+                <h1 id="showSaldo"> </h1>
+            </div>
+            <div class="col">
+                <h2>Saldo Awal Anda :</h2>
+                <h1 id="awalSaldo"> </h1>
+            </div>
+        </div>
+        <h3 id="ket"></h3>
+        <br> <br>
+            
+        <div class="row">
+            <div class="col">
+                <h1>Tambah Saldo</h1>
+                <input id="plusInput"> <br> <br>
+                <button type="button" id="tambahSaldo">Submit</button>
+            </div>
+            <div class="col">
+                <h1>Kurangi Saldo</h1>
+                <input id="minusInput"> <br> <br>
+                <button type="button" id="kurangiSaldo">Submit</button>
+            </div>
+        </div>
+            
+            
+    </div>
+    <script src="lib/bank_account.js"></script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+.col{
+    float: left;
+    width: 50%;
+    flex: 50%;
+}
+.row {
+    display: flex;
+  }
+
