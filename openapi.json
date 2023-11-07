@@ -1,112 +1,492 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "title": "Blog Documentation - OpenAPI 3.0",
-    "description": "Dokumentasi API Blog",
-    "contact": {
-      "email": "apiteam@swagger.io"
-    },
+    "title": "Challenge - 2",
     "version": "1.0.11"
   },
   "servers": [
     {
-      "url": "http://localhost:3000"
+      "url": "https://localhost:3000/api/v1"
     }
   ],
   "tags": [
     {
-      "name": "articles",
-      "description": "Everything about your Articles"
+      "name": "transactions",
+      "description": "How do you want to transfer your money"
     },
     {
-      "name": "comments",
-      "description": "Access to comments"
+      "name": "accounts",
+      "description": "Your Account"
     },
     {
       "name": "users",
-      "description": "Operations about user"
+      "description": "All about Users"
+    },
+    {
+      "name": "auth",
+      "description": "Authentification"
     }
   ],
   "paths": {
-    "/articles": {
-      "get": {
+    "/transactions": {
+      "post": {
         "tags": [
-          "articles"
+          "transactions"
         ],
-        "summary": "Get Article lists",
-        "description": "Get Article Lists",
-        "operationId": "getArticles",
-        "parameters": [
-          {
-            "name": "page",
-            "in": "query",
-            "description": "Pagination page",
-            "required": false,
-            "explode": true,
-            "schema": {
-              "type": "number",
-              "default": 1
-            }
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "Pagination limit",
-            "required": false,
-            "explode": true,
-            "schema": {
-              "type": "number",
-              "default": 10
+        "summary": "Creates list of transaction with given input array",
+        "description": "Creates list of transaction with given input array",
+        "operationId": "createTransaction",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Transaction"
+                }
+              }
             }
           }
+        },
+        "responses": {
+          "201": {
+            "description": "Akun Bank berhasil ditambahkan",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Input gagal!! Periksa Kembali Data"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "transactions"
         ],
+        "summary": "Returns All Transactions Data",
+        "description": "Returns Transactions Data Lists",
+        "operationId": "getTransactions",
         "responses": {
           "200": {
-            "description": "Successful operation",
+            "description": "Success!",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Article"
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "integer",
+                    "format": "int32"
                   }
                 }
               }
             }
           }
         }
-      },
-      "post": {
+      }
+    },
+    "/transactions/{id}": {
+      "get": {
         "tags": [
-          "articles"
+          "accounts"
         ],
-        "summary": "Add a new article to the blog",
-        "description": "Add a new article to the blog",
-        "operationId": "addArticle",
-        "requestBody": {
-          "description": "Create a new article in the blog",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Article"
-              }
+        "summary": "Get transaction by id",
+        "description": "",
+        "operationId": "getTransactionById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id that needs to be fetched. Use 1 for testing. ",
+            "required": true,
+            "schema": {
+              "type": "integer"
             }
-          },
-          "required": true
-        },
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Successful operation",
+            "description": "Data Ditemukan",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Article"
+                  "$ref": "#/components/schemas/Transaction"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Transaction"
                 }
               }
             }
           },
-          "405": {
-            "description": "Invalid input"
+          "400": {
+            "description": "Bad Request! id is required"
+          }
+        }
+      }
+    },
+    "/accounts": {
+      "post": {
+        "tags": [
+          "accounts"
+        ],
+        "summary": "Creates list of Account with given input array",
+        "description": "Creates list of Account with given input array",
+        "operationId": "createAccount",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/BankAccount"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Akun Bank berhasil ditambahkan",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Input gagal!! Periksa Kembali Data"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "accounts"
+        ],
+        "summary": "Returns All Accounts Data",
+        "description": "Returns Users Accounts Lists",
+        "operationId": "getAccounts",
+        "responses": {
+          "200": {
+            "description": "Success!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/accounts/{id}": {
+      "get": {
+        "tags": [
+          "accounts"
+        ],
+        "summary": "Get Account by id",
+        "description": "",
+        "operationId": "getAccountById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id that needs to be fetched. Use 1 for testing. ",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Data Ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BankAccount"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/BankAccount"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request! id is required"
+          }
+        }
+      }
+    },
+    "/users": {
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Creates list of users with given input array",
+        "description": "Creates list of users with given input array",
+        "operationId": "createUsers",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Users"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User dan Profil berhasil ditambahkan",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Input gagal!! Periksa Kembali Data"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Returns All Users Data",
+        "description": "Returns Users Data Lists",
+        "operationId": "getUsers",
+        "responses": {
+          "200": {
+            "description": "Success!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Get user by id",
+        "description": "",
+        "operationId": "getUsersById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id that needs to be fetched. Use 1 for testing. ",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Data Ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Users"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Users"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request! id is required"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Logs user into the system",
+        "description": "",
+        "operationId": "login",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "description": "The user name for login",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "The password for login in clear text",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Berhasil Login!!",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Password Salah!!"
+          },
+          "404": {
+            "description": "Email tidak ditemukan!"
+          }
+        }
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Register user into the system",
+        "description": "",
+        "operationId": "register",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "The user name for register",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "description": "email for register",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "The password for register in clear text",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Berhasil Register!!",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Password Salah!!"
+          },
+          "404": {
+            "description": "Email sudah ada!"
+          }
+        }
+      }
+    },
+    "/auth/whoami": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Check User Token",
+        "description": "",
+        "operationId": "whoami",
+        "responses": {
+          "200": {
+            "description": "Success!!",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       }
@@ -114,10 +494,72 @@
   },
   "components": {
     "schemas": {
-      "Article": {
+      "Transaction": {
         "required": [
-          "title",
-          "content"
+          "trans_type",
+          "trans_nominal",
+          "trans_date"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "example": 15
+          },
+          "trans_nominal": {
+            "type": "number",
+            "format": "float",
+            "example": 198000
+          },
+          "trans_date": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2019-05-17"
+          },
+          "sender": {
+            "$ref": "#/components/schemas/BankAccount"
+          },
+          "receiver": {
+            "$ref": "#/components/schemas/BankAccount"
+          }
+        }
+      },
+      "BankAccount": {
+        "type": "object",
+        "required": [
+          "account_number",
+          "bank_name"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "example": 10
+          },
+          "bank_name": {
+            "type": "string",
+            "example": "Mandisendiri"
+          },
+          "account_number": {
+            "type": "integer",
+            "format": "int64",
+            "example": 12321
+          },
+          "balance": {
+            "type": "number",
+            "format": "float",
+            "example": 500000
+          },
+          "user": {
+            "$ref": "#/components/schemas/Users"
+          }
+        }
+      },
+      "Users": {
+        "required": [
+          "email",
+          "name"
         ],
         "type": "object",
         "properties": {
@@ -126,52 +568,97 @@
             "format": "int64",
             "example": 10
           },
-          "title": {
+          "email": {
             "type": "string",
-            "example": "Hello World"
+            "example": "fakhriramadhan@gmail.com"
           },
-          "thumbnails": {
+          "password": {
             "type": "string",
-            "example": "https://example.com/uploads/hello.jpg"
+            "format": "password",
+            "example": 12345678
           },
-          "summary": {
+          "name": {
             "type": "string",
-            "example": "Hello World"
+            "example": "Fakhri"
+          }
+        }
+      },
+      "Profile": {
+        "type": "object",
+        "required": [
+          "identity_number"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "example": 10
           },
-          "content": {
+          "identity_type": {
             "type": "string",
-            "description": "contents",
-            "example": "Lorem ipsum hello world"
+            "example": null
+          },
+          "identity_number": {
+            "type": "integer",
+            "format": "int64",
+            "example": 10
+          },
+          "phone_number": {
+            "type": "string",
+            "example": 857598998
+          },
+          "address": {
+            "type": "string",
+            "example": "jalanjalan"
+          },
+          "user": {
+            "$ref": "#/components/schemas/Users"
           }
         }
       }
     },
     "requestBodies": {
-      "Article": {
-        "description": "Pet object that needs to be added to the store",
+      "Users": {
+        "description": "User object that needs to be added to the system",
         "content": {
           "application/json": {
             "schema": {
-              "type": "object",
-              "properties": {
-                "title": {
-                  "type": "string",
-                  "example": "Hello World"
-                },
-                "thumbnails": {
-                  "type": "string",
-                  "example": "https://example.com/uploads/hello.jpg"
-                },
-                "summary": {
-                  "type": "string",
-                  "example": "Hello World"
-                },
-                "content": {
-                  "type": "string",
-                  "description": "contents",
-                  "example": "Lorem ipsum hello world"
-                }
-              }
+              "$ref": "#/components/schemas/Users"
+            }
+          },
+          "application/xml": {
+            "schema": {
+              "$ref": "#/components/schemas/Users"
+            }
+          }
+        }
+      },
+      "BankAccount": {
+        "description": "Account object that needs to be added to the system",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/BankAccount"
+            }
+          },
+          "application/xml": {
+            "schema": {
+              "$ref": "#/components/schemas/BankAccount"
+            }
+          }
+        }
+      },
+      "Transaction": {
+        "description": "Transaction object that needs to be added to the system",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Transaction"
+            }
+          },
+          "application/xml": {
+            "schema": {
+              "$ref": "#/components/schemas/Transaction"
             }
           }
         }

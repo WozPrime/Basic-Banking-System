@@ -104,24 +104,25 @@ module.exports = {
             data : user
         });
     },
-    // async destroy(req,res){
-    //     if(!req.params.id) res.status(400).json({
-    //         status: 'fail',
-    //         code : 400,
-    //         message: 'Bad Request! id is required',
-    //     });
     
-    //     // const userIndex = users.findIndex((el)=>el.id === +req.params.id);
-    //     // users.splice(userIndex,1);
-    //     const user = await prisma.user.delete({where: {
-    //         id: +req.params.id 
-    //     }});
+    async destroy(req,res){
+        if(!req.params.id) res.status(400).json({
+            status: 'fail',
+            code : 400,
+            message: 'Bad Request! id is required',
+        });
     
-    //     res.status(200).json({
-    //         status: 'success',
-    //         code : 200,
-    //         message: 'Data berhasil dihapus',
-    //         data: user
-    //     });
-    // }
+        // const userIndex = users.findIndex((el)=>el.id === +req.params.id);
+        // users.splice(userIndex,1);
+        const user = await prisma.user.delete({where: {
+            id: +req.params.id 
+        }});
+    
+        res.status(200).json({
+            status: 'success',
+            code : 200,
+            message: 'Data berhasil dihapus',
+            data: user
+        });
+    }
 }

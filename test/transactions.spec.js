@@ -1,4 +1,4 @@
-const base = require('../app/controller/api/users');
+const base = require('../app/controller/api/transactions');
 const mockRequest = (body = {}, query = {}, params = {}) => ({body, query, params});
 const mockResponse = () => {
     const res = {}
@@ -7,8 +7,8 @@ const mockResponse = () => {
     return res;
 }
 
-describe("users.get function", () => {
-    test("res.json called with users data", async () => {
+describe("transactions.get function", () => {
+    test("res.json called with transactions data", async () => {
         const req = mockRequest();
         const res = mockResponse();
         await base.get(req,res);
@@ -38,11 +38,12 @@ describe("users.get function", () => {
     });
 });
 
-describe("users.getbyid function",()=>{
-    test("res.json called with users data id",async()=>{
+
+describe("transactions.getbyid function",()=>{
+    test("res.json called with transactions data id",async()=>{
         let req=mockRequest()
         const res=mockResponse()
-        req.params.id=3
+        req.params.id=2
         await base.getById(req,res)
         expect(res.status).toBeCalledWith(200)
         expect(res.json).toBeCalledWith(
@@ -56,16 +57,14 @@ describe("users.getbyid function",()=>{
     })
 })
 
-describe("users.create function", ()=> {
+
+describe("transactions.create function", ()=> {
     test("res.json called with stats 200", async () => {
         const req =mockRequest({
-            name: "Coba5",
-            email:"coba5@gmail.com",
-            password:"123456",
-            identity_number: 989907,
-            address: "lanjalanja",
-            identity_type:"gold",
-            phone_number: "085754575457"
+            trans_type:"Transfer",
+            trans_nominal: 2000,
+            destination_accountId: 3,
+            source_accountId:7
         })
         const res =mockResponse()
         await base.create(req, res)
@@ -74,7 +73,7 @@ describe("users.create function", ()=> {
             expect.objectContaining({
                 status: 'success',
                 code: 200,
-                message: "User dan Profil berhasil ditambahkan",
+                message: 'Akun Bank berhasil ditambahkan',
                 data: expect.any(Object)
             })
         )
