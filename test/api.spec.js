@@ -60,7 +60,7 @@ describe("GET /api/v1/transactions", () => {
 });
 
 describe("POST /api/v1/auth",()=>{
-    test("Return status: Login test, 201 and Users Token",async()=>{
+    it("Return status: Login test, 201 and Users Token",async()=>{
         const res=await request(app).post('/api/v1/auth/login').send({
             email:'ramadhan@student.untan.ac.id',
             password:'12345678'
@@ -109,17 +109,18 @@ describe("POST /api/v1/auth",()=>{
 
 
 describe("POST /api/v1/auth",()=>{
-        test("Return status: Register test, 201 and User",async()=>{
-            const res=await request(app).post('/api/v1/auth/register').send({
-                name:'testkeberapa',
-                email:'archon4@gmail.com',
-                password:'test123456'
+        it("Return status: Register test, 201 and User",async()=>{
+            const res = await request(app).post('/api/v1/auth/register').send({
+                name: 'budi',
+                email: 'adagaknih@mail.com',
+                password: '12347890'
             })
-            expect(res.statusCode).toBe(201)
-            expect(res.body).toHaveProperty('status')
-            expect(res.body).toHaveProperty('message')
-            expect(res.body).toHaveProperty('data')
-            expect(res.body.data).toEqual(expect.any(Object))
+            // console.log(res.body.data.id)
+            expect(res.statusCode).toBe(201);
+            expect(res.body).toHaveProperty('status');
+            expect(res.body).toHaveProperty('message');
+            expect(res.body).toHaveProperty('data');
+            expect(res.body.data).toEqual(expect.any(Object));
        
         }) 
     })

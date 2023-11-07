@@ -28,7 +28,7 @@ const config = {
   collectCoverageFrom: ["./app/**"],
   coverageThreshold: {
     "global": {
-      "lines": 60
+      "lines": 90
     }
   },
 

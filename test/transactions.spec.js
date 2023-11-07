@@ -62,9 +62,9 @@ describe("transactions.create function", ()=> {
     test("res.json called with stats 200", async () => {
         const req =mockRequest({
             trans_type:"Transfer",
-            trans_nominal: 2000,
-            destination_accountId: 3,
-            source_accountId:7
+            trans_nominal: 500,
+            destination_accountId: 1,
+            source_accountId:2
         })
         const res =mockResponse()
         await base.create(req, res)
@@ -73,7 +73,7 @@ describe("transactions.create function", ()=> {
             expect.objectContaining({
                 status: 'success',
                 code: 200,
-                message: 'Akun Bank berhasil ditambahkan',
+                message: "Akun Bank berhasil ditambahkan",
                 data: expect.any(Object)
             })
         )

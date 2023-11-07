@@ -56,6 +56,24 @@ describe("users.getbyid function",()=>{
     })
 })
 
+describe("users.getbyid function",()=>{
+    test("res.json called with users data id",async()=>{
+        let req=mockRequest(null,null,{id:''})
+        const res=mockResponse()
+        await base.getById(req,res)
+        expect(res.status).toBeCalledWith(400)
+        expect(res.json).toBeCalledWith(
+            expect.objectContaining({
+                status: 'fail',
+                code : 400,
+                message: 'Bad Request! id is required',
+            })
+        )
+    })
+})
+
+
+
 describe("users.create function", ()=> {
     test("res.json called with stats 200", async () => {
         const req =mockRequest({
