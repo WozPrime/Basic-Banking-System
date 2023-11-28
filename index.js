@@ -12,6 +12,12 @@ const routers = require('./router');
 const swaggerJSON = require('./openapi.json');
 const swaggerUI = require('swagger-ui-express');
 const passport = require('./utils/passport');
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
+const { JWTsign } = require('./utils/jwt');
+const ejs = require('ejs');
+const {sendMail, sendMailHTML} = require('./lib/mailer')
+// const BASE_URL = process.env.BASE_URL;
 
 app.use(morgan('combined'))
 
@@ -52,6 +58,52 @@ app.get('/', function (req,res) {
 })
 app.get('/home', (req,res) =>res.sendFile(path.join(__dirname, '/app/view/index.html')));
 app.get('', (req,res)=> res.status(404).send("404 error not found"));
+
+app.post('/forgot-password/send-email', async (req,res)=> {
+    const { email } = req.body;
+    const url = req.protocol+"://"+req.headers.host;
+
+    const user = await prisma.user.findFirst({
+        where:{
+            email: req.body.email
+        } 
+    })
+
+    delete user.password
+    const token = await JWTsign(user);
+
+    const updateUser = await prisma.user.update({
+        where: {
+            email
+        },
+        data: {
+            resetToken: token
+        }
+    });
+
+
+    ejs.renderFile(__dirname + "/templates/forgot-password.ejs",
+    { 
+        forgot:`${url}/new-pass?token=${token}` 
+        }, function (err, data) {
+        // url:BASE_URL + '/' + token
+        if (err) {
+            console.log(err);
+        } else {
+            sendMailHTML(email, `Halo ${user.name}`, data)
+        }
+    })
+    // sendMail(email, `Halo ${name}`, 
+    //     `Terimakasih sdah mendaftar pada aplikasi kami! 
+    //     Silahkan klik link berikut tk proses verifikasi`
+    // )
+    
+    res.status(200).json({
+        status:'ok',
+        message: 'Berhasil Register! Silahkan cek email utk verifikasi',
+        url:url
+    })
+});
 
 app.get("/debug-sentry", function mainHandler(req, res) {
     throw new Error("My first Sentry error!");

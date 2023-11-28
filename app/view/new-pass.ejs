@@ -1,0 +1,20 @@
+<h2>Update New Password</h2>
+<form action="/update-pass" method="post">
+    <% if(messages.error){ %>
+        <span style="color: red">
+        <%= messages.error %>
+        </span>
+    <% } %>
+    <div>
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" required>
+    </div>
+    <div>
+        <label for="confirmPassword">Confirm Password</label>
+        <input type="password" name="confirmPassword" id="confirmPassword" required>
+    </div>
+    <div>
+        <input type="hidden" name="resetToken" value="<%= resetToken %>">
+        <input type="submit" value="Ubah Password">
+    </div>
+</form>

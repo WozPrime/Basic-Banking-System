@@ -19,6 +19,18 @@ router.get('/login', (req,res)=>{
     res.render('login.ejs');
 });
 
+
+router.get('/forgot-password', (req,res)=>{
+    res.render('fp.ejs');
+});
+
+
+router.get('/new-pass', (req,res)=>{
+    const resetToken = req.query.token;
+    res.render('new-pass.ejs', {resetToken:resetToken});
+});
+router.post('/update-pass',controller.auth.updatePass);
+
 router.post('/login', passport.authenticate('local', {
     successRedirect: '/home',
     failureRedirect: '/login'

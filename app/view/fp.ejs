@@ -1,0 +1,17 @@
+<h1>Reset Password</h1>
+<form action="/forgot-password/send-email" method="post">
+    <% if(messages.error){ %>
+        <span style="color: red">
+        <%= messages.error %>
+        </span>
+    <% } %>
+    <p>Silahkan input email yang telah terdaftar</p>
+    <div>
+        <label for="email">email</label>
+        <input type="text" id="emai" name="email" required>
+    </div>
+    <br>
+    <div>
+        <input type="submit" value="Kirim">
+    </div>
+</form>

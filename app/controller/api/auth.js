@@ -1,6 +1,7 @@
 const { PrismaClient } = require('@prisma/client');
 const {encryptPassword, checkPassword} = require('../../../utils/auth');
 const { JWTsign } = require('../../../utils/jwt');
+const ejs = require('ejs');
 
 const prisma = new PrismaClient();
 
@@ -75,6 +76,53 @@ module.exports ={
             data:createUser
         });
     },
+
+    async updatePass(req,res){
+        const {password,confirmPassword,resetToken} = req.body;
+
+        const user = await prisma.user.findFirst({
+            where: { resetToken }
+        });
+
+        if(!user){
+            return res.status(404).json({
+                status: "Fail!!",
+                message: "Email tidak ditemukan!"
+            })
+        }
+
+        if(user.resetToken !== resetToken){
+            return res.status(401).json({
+                status: "Fail!!!",
+                message: "Token tidak Valid!!"
+            });
+        }
+
+        if(confirmPassword !== password){
+            return res.status(401).json({
+                status: "Fail!!!",
+                message: "Password Salah!!"
+            });
+        }
+
+        const updateUser = await prisma.user.update({
+            where: {
+                email:user.email
+            },
+            data: {
+                resetToken:null,
+                password: await encryptPassword(password)
+            }
+        });
+
+        return res.status(201).json({
+            status: "Success!!",
+            message: "Password Berhasil Di Update!!",
+        });
+
+
+    },
+
     registerForm: async (req,res, next) =>{
         try {
             const {email, password,name} = req.body;
